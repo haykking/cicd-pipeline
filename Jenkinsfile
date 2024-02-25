@@ -1,22 +1,14 @@
 pipeline {
-    agent none
+    agent any
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    checkout scm
-                }
-            }
-        }
         stage('Build') {
             steps {
-                // Add build steps here
+                sh 'npm install'
             }
         }
-
         stage('Test') {
             steps {
-                // Add test steps here
+                sh 'scripts/test.sh'
             }
         }
         stage('Build Docker Image Dev') {
