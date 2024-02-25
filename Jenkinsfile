@@ -18,6 +18,9 @@ pipeline {
             agent {
                 docker { image 'node:7.8.0' }
             }
+            steps {
+                // Add Build steps here
+            }
         }
         stage('Build Docker Image Main') {
             when {
@@ -25,6 +28,9 @@ pipeline {
             }
             agent {
                 docker { image 'node:7.8.0' }
+            }
+            steps {
+                // Add Build steps here
             }
         }
         stage('Deploy') {
