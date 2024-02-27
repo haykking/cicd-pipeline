@@ -15,14 +15,18 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'chmod +x scripts/build.sh'
-                sh 'scripts/build.sh'
+                nodejs('nodejs-gtool') {
+                    sh 'chmod +x scripts/build.sh'
+                    sh 'scripts/build.sh'
+                }
             }
         }
         stage('Test') {
             steps {
-                sh 'chmod +x scripts/test.sh'
-                sh 'scripts/test.sh'
+                nodejs('nodejs-gtool') {
+                    sh 'chmod +x scripts/test.sh'
+                    sh 'scripts/build.sh'
+                }
             }
         }
         stage('Build Docker Image Dev') {
