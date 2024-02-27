@@ -51,10 +51,12 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com/v2/', 'credentials-id') {
-                    def customImage = docker.build('nodemain:v1.0')
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com/v2/', 'credentials-id') {
+                        def customImage = docker.build('nodemain:v1.0')
 
-                    customImage.push()
+                        customImage.push()
+                    }
                 }
             }
         }
