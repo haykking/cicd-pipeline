@@ -20,16 +20,20 @@ pipeline {
             when {
                 branch: 'dev'
             }
-            script {
-                docker.build('nodemain:v1.0', './Dockerfile')
+            steps {
+                script {
+                    docker.build('nodemain:v1.0', './Dockerfile')
+                }
             }
         }
         stage('Build Docker Image Main') {
             when {
                 branch: 'main'
             }
-            script {
-                docker.build('nodedev:v1.0', './Dockerfile')
+            steps {
+                script {
+                    docker.build('nodedev:v1.0', './Dockerfile')
+                }
             }
         }
         stage('Deploy') {
