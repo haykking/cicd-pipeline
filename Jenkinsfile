@@ -1,9 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
                 checkout scm
+            }
+        }
+        stage('Tool Install') {
+            steps {
+                nodejs 'nodejs-gtool'
             }
         }
         stage('Build') {
