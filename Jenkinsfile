@@ -23,8 +23,13 @@ pipeline {
             }
             steps {
                 script {
-                    docker.removeImage('nodedev:v1.0')
+                    containerId = docker.listContainers(filters: ['label=name=nodedev:v1.0'])[0]?.id
+                    if (containerId) {
+                        docker.stopContainer(containerId)
+                        docker.removeContainer(containerId)
+                    }
                     docker.build('nodedev:v1.0', '.')
+                    sh "docker run -d --expose 3001 -p 3001:3000 nodedev:v1.0"
                 }
             }
         }
@@ -34,14 +39,23 @@ pipeline {
             }
             steps {
                 script {
-                    docker.removeImage('nodemain:v1.0')
+                    containerId = docker.listContainers(filters: ['label=name=nodemain:v1.0'])[0]?.id
+                    if (containerId) {
+                        docker.stopContainer(containerId)
+                        docker.removeContainer(containerId)
+                    }
                     docker.build('nodemain:v1.0', '.')
+                    sh "docker run -d --expose 3000 -p 3000:3000 nodemain:v1.0"
                 }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Add deployment steps here'
+                docker.withRegistry('https://registry.hub.docker.com/v2/', 'credentials-id') {
+                    def customImage = docker.build('nodemain:v1.0')
+
+                    customImage.push()
+                }
             }
         }
     }
