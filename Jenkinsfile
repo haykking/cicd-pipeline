@@ -8,7 +8,9 @@ pipeline {
         }
         stage('Tool Install') {
             steps {
-                nodejs 'nodejs-gtool'
+                nodejs(nodeJSInstallationName: 'node-gtool') {
+                    sh 'npm config ls'
+                }
             }
         }
         stage('Build') {
