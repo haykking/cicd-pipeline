@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     sh "docker stop nodedev && true"
-                    sh "docker rm rm nodedev && true"
+                    sh "docker rm nodedev && true"
 
                     docker.build('nodedev:v1.0', '.')
                     sh "docker run -d --name nodedev --expose 3001 -p 3001:3000 nodedev:v1.0"
