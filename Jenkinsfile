@@ -13,7 +13,7 @@ pipeline {
             steps {
                 nodejs('nodejs-gtool') {
                     sh 'chmod +x scripts/test.sh'
-                    sh 'scripts/build.sh'
+                    sh 'scripts/test.sh'
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build('nodemain:v1.0', './Dockerfile')
+                    docker.build('nodemain:v1.0', '.')
                 }
             }
         }
@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build('nodedev:v1.0', './Dockerfile')
+                    docker.build('nodedev:v1.0', '.')
                 }
             }
         }
