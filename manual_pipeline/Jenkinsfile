@@ -1,0 +1,69 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'Environment',
+            choices: ['main', 'dev'],
+            description: 'Select environment: main or dev'
+        )
+        string(
+            name: 'Image tag',
+            description: 'Specify the tag'
+        )
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                nodejs('nodejs-gtool') {
+                    sh 'chmod +x scripts/build.sh'
+                    sh 'scripts/build.sh'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                nodejs('nodejs-gtool') {
+                    sh 'chmod +x scripts/test.sh'
+                    sh 'scripts/test.sh'
+                }
+            }
+        }
+
+        stage('Build Docker Image Main') {
+
+            steps {
+                script {
+
+                    def environment = params.get('Target Environment')
+                    def imageTag = params.get('Image Tag')
+                    if (environment == 'main') {
+                        sh 'docker stop nodemain || true'
+                        sh 'docker rm nodemain || true'
+
+                        docker.build('${imageTag}', '.')
+                        sh 'docker run -d --name nodemain --expose 3000 -p 3000:3000 ${imageTag}'
+                    } else if (environment == 'dev') {
+                        sh 'docker stop nodedev || true'
+                        sh 'docker rm nodedev || true'
+
+                        docker.build('${imageTag}', '.')
+                        sh 'docker run -d --name nodedev --expose 3001 -p 3001:3000 ${imageTag}'
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    def imageTag = params.get('Image Tag')
+                    docker.withRegistry('https://registry.hub.docker.com/v2/', 'dockerhub') {
+                        def customImage = docker.build('haykking/${imageTag}')
+
+                        customImage.push()
+                    }
+                }
+            }
+        }
+    }
+}
