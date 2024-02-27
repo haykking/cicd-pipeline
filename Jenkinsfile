@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Build Docker Image Dev') {
             when {
-                branch: 'dev'
+                branch 'dev'
             }
             steps {
                 script {
@@ -28,7 +28,7 @@ pipeline {
         }
         stage('Build Docker Image Main') {
             when {
-                branch: 'main'
+                branch 'main'
             }
             steps {
                 script {
@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-            // Add deployment steps here
+            echo 'Add deployment steps here'
             }
         }
     }
