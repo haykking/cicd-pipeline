@@ -1,9 +1,14 @@
 pipeline {
     agent any
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
-                sh 'npm install'
+                sh 'scripts/build.sh'
             }
         }
         stage('Test') {
@@ -15,27 +20,21 @@ pipeline {
             when {
                 branch: 'dev'
             }
-            agent {
-                docker { image 'node:7.8.0' }
-            }
             steps {
-                // Add Build steps here
+                docker.build('nodemain:v1.0', './Dockerfile')
             }
         }
         stage('Build Docker Image Main') {
             when {
                 branch: 'main'
             }
-            agent {
-                docker { image 'node:7.8.0' }
-            }
             steps {
-                // Add Build steps here
+                docker.build('nodedev:v1.0', './Dockerfile')
             }
         }
         stage('Deploy') {
             steps {
-                // Add deployment steps here
+            // Add deployment steps here
             }
         }
     }
