@@ -48,7 +48,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com/v2/', 'credentials-id') {
+                    docker.withRegistry('https://registry.hub.docker.com/v2/', 'dockerhub') {
                         def customImage = docker.build('nodemain:v1.0')
 
                         customImage.push()
