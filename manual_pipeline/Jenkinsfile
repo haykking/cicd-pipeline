@@ -38,18 +38,20 @@ pipeline {
 
                     def environment = params.get('Target Environment')
                     def imageTag = params.get('Image Tag')
+
                     if (environment == 'main') {
                         sh 'docker stop nodemain || true'
                         sh 'docker rm nodemain || true'
 
-                        docker.build('${imageTag}', '.')
-                        sh 'docker run -d --name nodemain --expose 3000 -p 3000:3000 ${imageTag}'
+                        docker.build("${imageTag}", '.')
+                        sh "docker run -d --name nodemain --expose 3000 -p 3000:3000 ${imageTag}"
+
                     } else if (environment == 'dev') {
                         sh 'docker stop nodedev || true'
                         sh 'docker rm nodedev || true'
 
-                        docker.build('${imageTag}', '.')
-                        sh 'docker run -d --name nodedev --expose 3001 -p 3001:3000 ${imageTag}'
+                        docker.build("${imageTag}", '.')
+                        sh "docker run -d --name nodedev --expose 3001 -p 3001:3000 ${imageTag}"
                     }
                 }
             }
