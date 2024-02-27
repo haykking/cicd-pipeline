@@ -20,7 +20,7 @@ pipeline {
             when {
                 branch: 'dev'
             }
-            steps {
+            script {
                 docker.build('nodemain:v1.0', './Dockerfile')
             }
         }
@@ -28,7 +28,7 @@ pipeline {
             when {
                 branch: 'main'
             }
-            steps {
+            script {
                 docker.build('nodedev:v1.0', './Dockerfile')
             }
         }
