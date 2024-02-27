@@ -23,11 +23,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh "docker stop \$(docker ps -a -q --filter=label=name=nodedev:v1.0)"
-                    sh "docker rm \$(docker ps -a -q --filter=label=name=nodedev:v1.0)"
+                    sh "docker stop nodedev && true"
+                    sh "docker rm rm nodedev && true"
 
                     docker.build('nodedev:v1.0', '.')
-                    sh "docker run -d --expose 3001 -p 3001:3000 nodedev:v1.0"
+                    sh "docker run -d --name nodedev --expose 3001 -p 3001:3000 nodedev:v1.0"
                 }
             }
         }
@@ -37,11 +37,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh "docker stop \$(docker ps -a -q --filter=label=name=nodemain:v1.0)"
-                    sh "docker rm \$(docker ps -a -q --filter=label=name=nodemain:v1.0)"
+                    sh "docker stop nodemain && true"
+                    sh "docker rm nodemain && true"
 
                     docker.build('nodemain:v1.0', '.')
-                    sh "docker run -d --expose 3000 -p 3000:3000 nodemain:v1.0"
+                    sh "docker run -d --name nodemain --expose 3000 -p 3000:3000 nodemain:v1.0"
                 }
             }
         }
