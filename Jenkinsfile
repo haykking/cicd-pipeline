@@ -23,7 +23,8 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build('nodemain:v1.0', '.')
+                    docker.removeImage('nodedev:v1.0')
+                    docker.build('nodedev:v1.0', '.')
                 }
             }
         }
@@ -33,7 +34,8 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build('nodedev:v1.0', '.')
+                    docker.removeImage('nodemain:v1.0')
+                    docker.build('nodemain:v1.0', '.')
                 }
             }
         }
