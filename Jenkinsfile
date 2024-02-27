@@ -1,18 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
-        stage('Tool Install') {
-            steps {
-                nodejs('nodejs-gtool') {
-                    sh 'npm config ls'
-                }
-            }
-        }
         stage('Build') {
             steps {
                 nodejs('nodejs-gtool') {
