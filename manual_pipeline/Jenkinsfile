@@ -61,7 +61,7 @@ pipeline {
                 script {
                     def imageTag = params.get('Image Tag')
                     docker.withRegistry('https://registry.hub.docker.com/v2/', 'dockerhub') {
-                        def customImage = docker.build('haykking/${imageTag}')
+                        def customImage = docker.build("haykking/${imageTag}")
 
                         customImage.push()
                     }
