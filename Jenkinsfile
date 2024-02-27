@@ -23,11 +23,9 @@ pipeline {
             }
             steps {
                 script {
-                    containerId = docker.listContainers(filters: ['label=name=nodedev:v1.0'])[0]?.id
-                    if (containerId) {
-                        docker.stopContainer(containerId)
-                        docker.removeContainer(containerId)
-                    }
+                    sh "docker stop $(docker ps -a -q --filter=label=name=nodedev:v1.0)"
+                    sh "docker rm $(docker ps -a -q --filter=label=name=nodedev:v1.0)"
+
                     docker.build('nodedev:v1.0', '.')
                     sh "docker run -d --expose 3001 -p 3001:3000 nodedev:v1.0"
                 }
@@ -39,11 +37,9 @@ pipeline {
             }
             steps {
                 script {
-                    containerId = docker.listContainers(filters: ['label=name=nodemain:v1.0'])[0]?.id
-                    if (containerId) {
-                        docker.stopContainer(containerId)
-                        docker.removeContainer(containerId)
-                    }
+                    sh "docker stop $(docker ps -a -q --filter=label=name=nodemain:v1.0)"
+                    sh "docker rm $(docker ps -a -q --filter=label=name=nodemain:v1.0)"
+
                     docker.build('nodemain:v1.0', '.')
                     sh "docker run -d --expose 3000 -p 3000:3000 nodemain:v1.0"
                 }
