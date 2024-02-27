@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com/v2/', 'dockerhub') {
-                        def customImage = docker.build('nodemain:v1.0')
+                        def customImage = docker.build('haykking/nodemain:v1.0')
 
                         customImage.push()
                     }
